@@ -28,8 +28,19 @@ const BitcoinChart = () => {
 
         const chart = createChart(chartContainerRef.current, {
             width: chartContainerRef.current.clientWidth,
-            height: chartContainerRef.current.clientHeight
-            // ... other chart options
+            height: chartContainerRef.current.clientHeight,
+            layout: {
+                background: {type: 'solid', color: 'black'},
+                textColor: 'white',
+            },
+            grid: {
+                vertLines: {
+                    color: 'rgba(70, 70, 70, 0.5)', // Darker shade for vertical lines
+                },
+                horzLines: {
+                    color: 'rgba(70, 70, 70, 0.5)', // Darker shade for horizontal lines
+                },
+            },
         });
 
         const lineSeries = chart.addLineSeries();
