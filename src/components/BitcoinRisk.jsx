@@ -90,6 +90,7 @@ const BitcoinRisk = () => {
             color: 'red',
             lastValueVisible: false,
             priceScaleId: 'right',
+            lineWidth: 1
         });
         riskSeries.setData(chartData.map(data => ({ time: data.time, value: data.Risk })));
         
@@ -97,6 +98,7 @@ const BitcoinRisk = () => {
         const priceSeries = chart.addLineSeries({
             color: 'gray',
             priceScaleId: 'left',
+            lineWidth: 0.7,
         });
         priceSeries.setData(chartData.map(data => ({ time: data.time, value: data.value })));
 
@@ -151,7 +153,24 @@ const BitcoinRisk = () => {
         };
     }, [chartData]);
 
-    return <div ref={chartContainerRef} style={{ height: '100%', width: '100%' }} />;
+    return (
+        <div className="chart-container" style={{ position: 'relative', height: '100%', width: '100%' }}>
+          <div className="legend" style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', backgroundColor: '#222', color: 'white', padding: '10px', zIndex: 2 }}>
+            <span style={{ marginRight: '20px', display: 'inline-block' }}>
+              <span style={{ backgroundColor: 'gray', height: '10px', width: '10px', display: 'inline-block', marginRight: '5px' }}></span>
+              Bitcoin Price
+            </span>
+            <span style={{ display: 'inline-block' }}>
+              <span style={{ backgroundColor: 'red', height: '10px', width: '10px', display: 'inline-block', marginRight: '5px' }}></span>
+              Risk Metric
+            </span>
+          </div>
+          <div ref={chartContainerRef} style={{ height: '100%', width: '100%', zIndex: 1 }} />
+        </div>
+      );
+      
+      
+      
 };
 
 export default BitcoinRisk;
