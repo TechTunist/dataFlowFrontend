@@ -80,7 +80,7 @@ const Sidebar = () => {
                 ml="15px"
               >
                 <Typography variant="h3" color={colors.grey[100]}>
-                  ADMINIS
+                  Navigation
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
@@ -107,10 +107,10 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Ed Roh
+                  Data Flow
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
-                  VP Fancy Admin
+                  Quantitative Analysis
                 </Typography>
               </Box>
             </Box>
@@ -221,6 +221,13 @@ const Sidebar = () => {
             <Item
               title="Bitcoin Chart"
               to="/bitcoin"
+              icon={<TimelineOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
+              title="Risk Chart"
+              to="/risk"
               icon={<TimelineOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

@@ -13,6 +13,7 @@ import Pie from "./scenes/pie";
 import FAQ from "./scenes/faq";
 import Geography from "./scenes/geography";
 import Bitcoin from "./scenes/bitcoin";
+import Risk from "./scenes/risk";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "./theme";
 import Calendar from "./scenes/calendar/calendar";
@@ -42,6 +43,7 @@ function App() {
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/geography" element={<Geography />} />
               <Route path="/bitcoin" element={<Bitcoin />} />
+              <Route path="/risk" element={<Risk />} />
             </Routes>
           </main>
         </div>
