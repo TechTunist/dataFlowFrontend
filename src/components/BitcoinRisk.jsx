@@ -1,4 +1,3 @@
-// BitcoinChart.jsx
 import React, { useRef, useEffect, useState } from 'react';
 import { createChart } from 'lightweight-charts';
 
@@ -34,8 +33,8 @@ const BitcoinRisk = () => {
         return normalizedRisk;
     };
 
+    // Fetch and process data
     useEffect(() => {
-        // Replace with your API call function
         fetch('http://127.0.0.1:8000/api/btc/price/')
             .then(response => response.json())
             .then(data => {
@@ -43,17 +42,13 @@ const BitcoinRisk = () => {
                     time: item.date,
                     value: parseFloat(item.close)
                 }));             
-                
-                // setChartData(formattedData);
                 const withRiskMetric = calculateRiskMetric(formattedData);
                 setChartData(withRiskMetric);
-
             })
-            .catch(error => {
-                console.error('Error fetching data: ', error);
-            });
+            .catch(error => console.error('Error fetching data: ', error));
     }, []);
 
+    // Render chart
     useEffect(() => {
         if (chartData.length === 0) return;
 
@@ -61,64 +56,92 @@ const BitcoinRisk = () => {
             width: chartContainerRef.current.clientWidth,
             height: chartContainerRef.current.clientHeight,
             layout: {
-                background: {type: 'solid', color: 'black'},
+                background: { type: 'solid', color: 'black' },
                 textColor: 'white',
             },
             grid: {
-                vertLines: {
-                    color: 'rgba(70, 70, 70, 0.5)', // Darker shade for vertical lines
-                },
-                horzLines: {
-                    color: 'rgba(70, 70, 70, 0.5)', // Darker shade for horizontal lines
-                },
+                vertLines: { color: 'rgba(70, 70, 70, 0.5)' },
+                horzLines: { color: 'rgba(70, 70, 70, 0.5)' },
             },
+            rightPriceScale: {
+                scaleMargins: {
+                    top: 0.1,
+                    bottom: 0.1,
+                },
+                borderVisible: false,
+            },
+            leftPriceScale: {
+                borderVisible: false,
+                mode: 1, // Logarithmic scale
+            },
+            timeScale: {
+                minBarSpacing: 0.001,
+                fixLeftEdge: true,
+                fixRightEdge: true,
+                mouseWheel: false,
+                lockVisibleTimeRangeOnResize: true,
+            },
+            handleScroll: false,
+            handleScale: false,
         });
-
-        // Primary series for Bitcoin Price
-        // const priceSeries = chart.addLineSeries({
-        //     color: 'gold',
-        //     title: 'Bitcoin Price',
-        // });
-
-        //////////// remove this line to only show the risk metric /////////////////
-        // priceSeries.setData(chartData.map(data => ({ time: data.time, value: data.value })));
-
-        // Secondary series for Risk Metric
+        
+        // Series for Risk Metric
         const riskSeries = chart.addLineSeries({
-            color: 'blue',
-            title: 'Risk Metric',
-            priceScaleId: 'risk-metric-scale',
-            scaleMargins: {
-                top: 0.2,
-                bottom: 0,
-            },
+            color: 'red',
+            lastValueVisible: false,
+            priceScaleId: 'right',
         });
         riskSeries.setData(chartData.map(data => ({ time: data.time, value: data.Risk })));
+        
+        // Series for Bitcoin Price on Logarithmic Scale
+        const priceSeries = chart.addLineSeries({
+            color: 'gray',
+            priceScaleId: 'left',
+        });
+        priceSeries.setData(chartData.map(data => ({ time: data.time, value: data.value })));
 
+        
+        // Disable all interactions
+        chart.applyOptions({
+            handleScroll: false,
+            handleScale: false,
+        });
+
+        // // Configure the specific price scale for the risk series
+        // chart.priceScale('risk-metric-scale').applyOptions({
+        //     autoScale: false,
+        //     scaleMargins: {
+        //         top: 0.1,
+        //         bottom: 0,
+        //     },
+        //     borderVisible: false,
+        //     entireTextOnly: true,
+        //     mode: 2, // Log scale
+        //     invertScale: false,
+        //     alignLabels: true,
+        //     drawTicks: true,
+        //     visible: true,
+        //     highPrice: 1,
+        //     lowPrice: 0,
+        // });
+        
+        chart.priceScale('left').applyOptions({
+            mode: 1, // Logarithmic scale
+            borderVisible: false,
+        });
+        
         // Function to update chart size
         const resizeChart = () => {
             if (chart && chartContainerRef.current) {
                 chart.applyOptions({
                     width: chartContainerRef.current.clientWidth,
-                    height: chartContainerRef.current.clientHeight,
+                    height: chartContainerRef.current.clientHeight
                 });
             }
         };
 
         window.addEventListener('resize', resizeChart);
         resizeChart();
-
-        const lineSeries = chart.addLineSeries();
-        // lineSeries.setData(chartData);
-
-        // // // set visible range to last N data points
-        // const N = 30; // Number of data points to display
-        // const startIndex = Math.max(chartData.length - N, 0);
-        // const endIndex = chartData.length - 1;
-        // chart.timeScale().setVisibleRange({
-        //     from: chartData[startIndex].time,
-        //     to: chartData[endIndex].time,
-        // });
 
         chart.timeScale().fitContent();
 

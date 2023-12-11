@@ -32,6 +32,8 @@ function App() {
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/bitcoin" element={<Bitcoin />} />
+              <Route path="/risk" element={<Risk />} />
               <Route path="/team" element={<Team />} />
               <Route path="/contacts" element={<Contacts />} />
               <Route path="/invoices" element={<Invoices />} />
@@ -42,8 +44,6 @@ function App() {
               <Route path="/faq" element={<FAQ />} />
               <Route path="/calendar" element={<Calendar />} />
               <Route path="/geography" element={<Geography />} />
-              <Route path="/bitcoin" element={<Bitcoin />} />
-              <Route path="/risk" element={<Risk />} />
             </Routes>
           </main>
         </div>
