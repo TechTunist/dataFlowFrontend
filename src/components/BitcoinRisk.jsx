@@ -65,14 +65,18 @@ const BitcoinRisk = () => {
             },
             rightPriceScale: {
                 scaleMargins: {
-                    top: 0.1,
-                    bottom: 0.1,
+                    top: 0.01,
+                    bottom: 0.01,
                 },
                 borderVisible: false,
             },
             leftPriceScale: {
-                borderVisible: false,
-                mode: 1, // Logarithmic scale
+                visible: true, // Show the left price scale
+                borderColor: 'rgba(197, 203, 206, 1)',
+                scaleMargins: {
+                    top: 0.1,
+                    bottom: 0.1,
+                },
             },
             timeScale: {
                 minBarSpacing: 0.001,
